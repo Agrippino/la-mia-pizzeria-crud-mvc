@@ -1,0 +1,40 @@
+﻿@model Pizze
+<!-- questa è la view che serve per aggigunere le pizze, inoltre sono inseride anche i validation che servono a dare delle regole-->
+<!--Con queste regole l'utente pu correggere il model che sta creando così da inviarmelo corretto-->
+<!--Andiamo ad inserire per ogni campo l'attributo collegato es: Nome pizza NamePizza-->
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<div class="d-flex align-items-center">
+				<h1 class="mt-3 mb-3">Nuova pizza</h1>
+			</div>
+	<form method="post" action="@Url.Action("CreaPizza", "Pizze")">
+		@Html.AntiForgeryToken()
+	<div class="mb-3">
+	<strong>Imamgine Pizza:</strong>
+	<input asp-for="ImagePizza" class="d-block w-100" />
+	<label for="floatingInputInvalid">Invalid input</label>
+	<span asp-validation-for="ImagePizza" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<strong>Nome Pizza:</strong>
+		<input asp-for="NamePizza" class="d-block w-100" />
+		<span asp-validation-for="NamePizza" class="text-danger"></span>
+	</div>
+		<div class="mb-3">
+		<strong>Descrizione Pizza:</strong>
+		<input asp-for="DescriptionPizza" class="d-block w-100" />
+		<span asp-validation-for="DescriptionPizza" class="text-danger"></span>
+	</div>
+		<div class="mb-3">
+		<strong>Prezzo Pizza:</strong>
+		<input asp-for="PricePizza" class="d-block w-100" />
+		<span asp-validation-for="PricePizza" class="text-danger"></span>
+	</div>
+	<div class="text-end">
+		<input type="submit" class="btn btn-small btn-info" value="Salva pizza">
+	</div>
+	</form>
+	</div>
+	</div>
+</div>

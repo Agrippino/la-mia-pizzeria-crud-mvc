@@ -1,0 +1,28 @@
+﻿<!--Questa è la view che serve per rappresentare le nostre pizze-->
+<!--Ho richiamato il model pizze che ha le informazioni e poi ho incollato la mia presentazione bt per dare corpo a tutto-->
+<!--A differenza di quello che abbiamo fatto in Homepage, qui con la chiocciola andiamo a richiamare solo model perché qui non abbiamo un attributo da richiamare dato che non abbiamo foresch o altro-->
+<!--Perché qui arriva una sola pizza, non occore il model.id perché l'accoppiamento avviene già prima-->
+
+@model Pizze
+                    <div class= "col-6 ps-5 mt-3 col-xxl-6 ">
+                        <div class="card mb-3 border border-dark shadow" style="max-width: 640px;">
+                          <div class="row g-0">
+                          <div class="col-md-4">
+                          <img src="@Model.ImagePizza" class="img-fluid rounded-start" alt="Pizza Margherita">
+                          </div>
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">
+                          @Model.NamePizza
+                          </h5> 
+                          <p class="card-text">
+                          @Model.DescriptionPizza
+                          </p>
+                          <p class="card-text"><small class="text-muted">
+                          @Model.PricePizza</small>
+                          </p>
+                          </div>
+                          </div>
+                          </div>
+                        </div>
+                    </div>

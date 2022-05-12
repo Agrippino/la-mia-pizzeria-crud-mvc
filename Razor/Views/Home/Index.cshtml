@@ -1,0 +1,99 @@
+﻿<strong>
+
+
+
+
+
+6. Partendo dalla data di oggi (usando la classe DateTime) stampare in pagina
+a. la data di 7 giorni fa
+b. che giorno della settimana è oggi (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)
+c. che giorno della settimana sarà nello stesso giorno e mese di oggi ma tra un anno (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)
+</strong>
+<p>
+1. Dichiarare una variabile valorizzandola con il nostro nome.
+Dichiarare un'altra variabile valorizzandola con il nostro cognome.
+Stampare il nostro nome e cognome all'interno di un tag h2.
+</p>
+<!--Variabile con il mio nome-->
+@{
+	string mioNome = "Agrippino";
+}
+<!--Variabile con il mio cognome-->
+@{
+	string mioCognome = "Russiello";
+}
+<h2>il mio nome è @mioNome e il mio cognome è @mioCognome</h2>
+
+<p>
+2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
+Stampare dentro uno span il risultato.
+</p>
+
+@{
+	int Somma(int addendo1, int addendo2)
+	{
+		return addendo1 + addendo2;
+	}
+}
+@{
+	var RisultatoSomma = Somma(10,5);
+}
+<span>La somma del numero è @RisultatoSomma</span>
+
+<p>3. Contare quante volte la lettera a è presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina</p>
+
+@{
+    string Frase = "nel mezzo del cammin di nostra vita";
+    int conteggio = Frase.Split("a").Length-1 ;
+    <span>La lettera "a" è presente @conteggio volte </span>
+}
+
+<p>4. Creare una List<int> di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70</p>
+ @{
+            List<int> listaInteriRandom = new List<int>();
+
+            Random random = new Random();
+
+            for(int i = 0; i < 20; i++)
+            {
+                int numeroRandom = random.Next(1, 91);
+                listaInteriRandom.Add(numeroRandom);
+            }
+            
+            foreach(int numero in listaInteriRandom)
+            {
+                if(numero >=20 && numero <=70)
+                {
+                    <span>@numero</span>
+                }  
+            }
+}
+
+<p>5. Stampare in pagina la data e l'ora attuale (usando la classe DateTime) con il formato anno-mese-giorno ore:minuti:secondi</p>
+@{
+            var dataOraAttuale = DateTime.Now;
+        }
+
+        <span>@dataOraAttuale</span>
+        <span>@dataOraAttuale.Year / @dataOraAttuale.Month / @dataOraAttuale.Day @dataOraAttuale.Hour : @dataOraAttuale.Minute : @dataOraAttuale.Second </span>
+
+ <p>6. Partendo dalla data di oggi (usando la classe DateTime) stampare in pagina:
+     a. la data di 7 giorni fa
+    b. che giorno della settimana è oggi (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)
+    c. che giorno della settimana sarà nello stesso giorno e mese di oggi ma tra un anno (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)
+ </p>   
+ 
+ <p>La data di 7 giorni fa: @(DateTime.Now - TimeSpan.FromDays(7))</p>
+
+ <p>Il giorno della settiamna di oggi è: @dataOraAttuale.ToString("ddd")</p>
+ @{
+     var DataGironoTraUnAnno = dataOraAttuale.AddYears(1);
+ }
+ <p>Il giorno della settimana di oggi tra un anno è: @DataGironoTraUnAnno.ToString("ddd")</p>
+
+
+ 
+
+
+
+
