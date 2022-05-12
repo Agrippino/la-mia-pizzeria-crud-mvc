@@ -37,7 +37,7 @@
          <!--Si ripete molte volte l'inserimento della card, quindi per rednere il programma più inteligente usiamo razor che ci permette di creare un for each che legge tutte le pizze che abbiamo inserito-->
           <!-- Creiamo un bottone che servirà per aggiugnere le pizze, arriiamo un url action che ci porterà poi a al metodo CreaPizza-->
              <a type="button" class="btn btn-outline-primary"
-             href="@Url.Action("CreaPizza", "Pizze")">
+             href="@Url.Action("CreaPizza", "Pizza")">
              Aggiungi Pizza 
              </a>
             </div>
@@ -74,7 +74,7 @@
                           <!--fondamentalemtne quello è un oggetto quindi facciamo new id = post.id-->
                           <!--Si può utilizzare anche questo metodo /Pizza/Dettagli/chiocciolaElencoPizze.Id posso trovare altre informazioni di questo nella documentazione URL ACTION"-->
                           <p>
-                          <a type="button" class="btn btn-outline-success" href="@Url.Action("Dettagli","Pizze", new {id = ElencoPizze.Id})">  Guarda <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                          <a type="button" class="btn btn-outline-success" href="@Url.Action("Dettagli","Pizza", new {id = ElencoPizze.Id})">  Guarda <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                     </svg>

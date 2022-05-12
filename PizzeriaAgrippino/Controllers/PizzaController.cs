@@ -71,9 +71,31 @@ namespace PizzeriaAgrippino.Controllers
         [HttpGet]
         public IActionResult Modifica(int id)
         {
-            
+            Pizze AggiornaPizza = GetPizzaById(id);
+
+            if(AggiornaPizza != null)
+            {
+                return (NotFound());
+            }else
+            {
+                return View("Update", AggiornaPizza);
+            }
         }
-            
+         
+        private Pizze GetPizzaById(int id)
+        {
+            Pizze TrovataDescrzionePizza = null;
+
+            foreach(Pizze pizze in PostData.GetPosts())
+            {
+                if(pizze.Id == id)
+                {
+                    TrovataDescrzionePizza = pizze;
+                    break;
+                }
+            }
+            return TrovataDescrzionePizza;
+        }
     }
 }
  
