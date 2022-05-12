@@ -76,33 +76,12 @@ namespace PizzeriaAgrippino.Controllers
         }
 
         [HttpGet]
-        public IActionResult Modifica(int id)
-        {
-            Pizze AggiornaPizza = GetPizzaById(id);
-
-            if(AggiornaPizza != null)
-            {
-                return (NotFound());
-            }else
-            {
-                return View("AggiornaPizze", AggiornaPizza);
-            }
+        public IActionResult Modifica()
+        {                            
+             return View("AggiornaPizze");
         }
          
-        private Pizze GetPizzaById(int id)
-        {
-            Pizze TrovataDescrzionePizza = null;
-
-            foreach(Pizze pizze in PostData.GetPosts())
-            {
-                if(pizze.Id == id)
-                {
-                    TrovataDescrzionePizza = pizze;
-                    break;
-                }
-            }
-            return TrovataDescrzionePizza;
-        }
+             
 
         [HttpPost]
         public IActionResult Modifica(int id, Pizze MandaPizza)
@@ -113,11 +92,11 @@ namespace PizzeriaAgrippino.Controllers
             }
 
 
-            Pizze PizzaIniziale = GetPizzaById(id);
+            Pizze PizzaIniziale = GetPizzeById(id);
 
             if (PizzaIniziale != null)
             {
-                PizzaIniziale.ImagePizza =
+                PizzaIniziale.ImagePizza = MandaPizza.ImagePizza;
                 PizzaIniziale.NamePizza = MandaPizza.NamePizza;
                 PizzaIniziale.DescriptionPizza = MandaPizza.DescriptionPizza;
                 PizzaIniziale.PricePizza = PizzaIniziale.PricePizza;
@@ -132,17 +111,17 @@ namespace PizzeriaAgrippino.Controllers
 
             private Pizze GetPizzeById(int id)
             {
-                Pizze TrovataDescrzionePizza = null;
+                Pizze PizzaCheStoPerModificare = null;
 
                 foreach (Pizze pizze in PostData.GetPosts())
                 {
                     if (pizze.Id == id)
                     {
-                        TrovataDescrzionePizza = pizze;
+                    PizzaCheStoPerModificare = pizze;
                         break;
                     }
                 }
-                return TrovataDescrzionePizza;
+                return PizzaCheStoPerModificare;
             }
           
         }
