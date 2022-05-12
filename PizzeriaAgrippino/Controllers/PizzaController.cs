@@ -49,7 +49,7 @@ namespace PizzeriaAgrippino.Controllers
         //Inseriamo il httpPost e inseriamo il validation pr evitare gli hacker 
         //creiamo anche un http get per scambiare le infomazioni 
         [HttpGet]
-        public IActionResult Creapizza()
+        public IActionResult CreaPizza()
         {
             return View("FormPizza");
         }
@@ -124,6 +124,34 @@ namespace PizzeriaAgrippino.Controllers
                 return PizzaCheStoPerModificare;
             }
           
-        }
+            [HttpPost]
+            public IActionResult Delete(int id)
+            {
+                int PizzaDaRimuovere = - 1;
+
+                List<Pizze> ListaDellePizze = PostData.GetPosts();
+    
+                for(int i = 0; i < ListaDellePizze.Count; i++)
+                {
+                  if(ListaDellePizze[i].Id == id)
+                  {
+                    PizzaDaRimuovere = i;
+                  }
+                }
+
+                if(PizzaDaRimuovere >= 0)
+                { 
+                 PostData.GetPosts().RemoveAt(PizzaDaRimuovere);
+
+                 return RedirectToAction("Index");
+                }else
+                {
+                return NotFound();
+                }
+            }
     }
+
+}
+
+
  
