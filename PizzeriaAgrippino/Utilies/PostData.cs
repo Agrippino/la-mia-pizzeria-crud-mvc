@@ -21,7 +21,7 @@ namespace PizzeriaAgrippino.Utilies
             List<Pizze> NuovaPizza = new List<Pizze> ();
 
                        
-                Pizze  Margherita = new Pizze (0,"/img_pizza/Margherita.png", "Margherita", "Pomodoro San Marzano D.O.P., fior di latte di Agerola, basilico e olio evo.", 4.00 );
+                Pizze  Margherita = new Pizze (0,"/img_pizza/Margherita.png", "Margherita", "Pomodoro San Marzano D.O.P., fior di latte di Agerola, basilico e olio evo.", 4.00  );
                 NuovaPizza.Add(Margherita);
                 Pizze AmatricianaCroccante = new Pizze(1, "/img_pizza/Amatriciana_Croccante.png", "Amatriciana Croccante","Pizza croccante cotta a bassa temperatura con pomodorini del piennolo gialli e rossi sfumati con vino bianco guanciale di cinghiale pecorino romano e provola di agerola.", 10.00);
                 NuovaPizza.Add(AmatricianaCroccante);
