@@ -149,6 +149,12 @@ namespace PizzeriaAgrippino.Controllers
                 return NotFound();
                 }
             }
+        
+            [HttpGet]
+            public IActionResult PaginaInformazioni()
+            {                  
+                return View("PaginaInformazioni");
+            }
     }
 
 }
