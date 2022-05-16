@@ -9,18 +9,18 @@ namespace PizzeriaAgrippino.Controllers
     {
         [HttpGet]
         public IActionResult Index()
-        {  
+        {
             //adesso aggiungiamo il nuovo sistema che abbiamo imparato con i DB
             List<Pizze> pizzes = new List<Pizze>();
 
-            using(PizzaContext DatabasePizza = new PizzaContext())
+            using (PizzaContext DatabasePizza = new PizzaContext())
             {
                 pizzes = DatabasePizza.pizzas.ToList<Pizze>();
             }
             //il controller dice le liste e il modello 
             //quando chiamo il controller idez il controller si chiama la lista dei post con il metodo getspost()
             // 
-            
+
             //poi dobbiamo passare una razor, quindi inseriamo il nome della lista, cioè pizzes 
             // potremmo anche non inserire homepage nel caso in cui avessimo lasciato il file nominato index 
             return View("HomePage", pizzes);
@@ -31,28 +31,27 @@ namespace PizzeriaAgrippino.Controllers
         public IActionResult Dettagli(int id)
         {
             //dichiariamo un oggeto temporaneo che sarà null per ora 
-            Pizze TrovataDescrzionePizza = null;
             //Per trovare la pizza scansiona la lista Pizze, lo facciamo con richiamando il metodo getposts che scansiona tutta la lista delle nostre pizze
             //Ovviamente creo questa vista nel controller pizze(cartella)
-            foreach (Pizze pizzes in PostData.GetPosts())
+            using (PizzaContext DatabasePizza = new PizzaContext())
             {
+                // adesso creiamo un nuovo sistema per trovare le pizze 
+                Pizze TrovaPizza = DatabasePizza.pizzas
+                .Where(Pizze => Pizze.Id == id)
+                .First();
+
                 //Se trovo una pizza con lo stesso id, dico che TDP è uguale a pizze e poi eseguo un break per uscire.
-                if (pizzes.Id == id)
+                if (TrovaPizza != null)
                 {
-                    TrovataDescrzionePizza = pizzes;
-                    break;
+                    return View("Dettagli", TrovaPizza);
+                } else
+                {
+                    return NotFound("Il post con id" + id + " non è stato trovato");
                 }
             }
-            //Se la pizza è stata trovata e quindi è diverso da null, faccio un return vista "dettagli" con il modello agganciato che sarebbe la pizza trovata
-            if (TrovataDescrzionePizza != null)
-            {
-                return View("Dettagli", TrovataDescrzionePizza);
-            }//altrimenti se non è stato trovato invio un messaggio di errrore che segna anche l'id, è simile al concetto di CW e Console.error
-            else
-            {
-                return NotFound("La pizza con id " + id + "non è stato trovato");
-                //Dopo aver fatto tutto questo devo creare in pizze una vista 
-            }
+            //Se la pizza è stata trovata e quindi è diverso da null, faccio un return vista "dettagli" con il modello agganciato che sarebbe la pizza trovata         
+            //altrimenti se non è stato trovato invio un messaggio di errrore che segna anche l'id, è simile al concetto di CW e Console.error
+            //Dopo aver fatto tutto questo devo creare in pizze una vista 
         }
         //creiamo un metodo per il aggiugere pizze ala mia pizzeria da parte dell'utente
         //Inseriamo il httpPost e inseriamo il validation pr evitare gli hacker 
@@ -62,35 +61,55 @@ namespace PizzeriaAgrippino.Controllers
         {
             return View("FormPizza");
         }
-                     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         //creiamo poi un metodo chiamato creaPizza per acciugnere le pizze, aggiugnere il modello 
         public IActionResult CreaPizza(Pizze NuovaPizza)
         {
             //se il modello non  è valido ritorniamo una view
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View("FormPizza", NuovaPizza);
 
             }
-            //Dato che non abbiamo un database dobbiamo inserire noi una nuovo oggetto che ha tutti gli aytributi della pizza 
-            //andiamo poi a richiamare tutto con il return redtoact e puntiamo alla nostra Homepage
-            Pizze NuovaPizzaDaInserire = new Pizze(PostData.GetPosts().Count, NuovaPizza.ImagePizza, NuovaPizza.NamePizza, NuovaPizza.DescriptionPizza, NuovaPizza.PricePizza);
-            //Se il modello è corretto prendiamo la lista postdata e il metodo get che aggiugnerà questo post alla lista
-            PostData.GetPosts().Add(NuovaPizzaDaInserire);
+            //utilizzando sempre il metodo con i Db, er creare una pizza richiamiamo un costruttore, poi aggiugniamo e salviamo nel db 
+            using (PizzaContext DatabasePizza = new PizzaContext())
+            {
+                Pizze NuovaPizzaDaInserire = new Pizze(NuovaPizza.ImagePizza, NuovaPizza.NamePizza, NuovaPizza.DescriptionPizza, NuovaPizza.PricePizza);
+                DatabasePizza.pizzas.Add(NuovaPizzaDaInserire);
+                DatabasePizza.SaveChanges();
+            }
             return RedirectToAction("Index");
 
-                
+            //Dato che non abbiamo un database dobbiamo inserire noi una nuovo oggetto che ha tutti gli aytributi della pizza 
+            //andiamo poi a richiamare tutto con il return redtoact e puntiamo alla nostra Homepage
+            //Se il modello è corretto prendiamo la lista postdata e il metodo get che aggiugnerà questo post alla lista
         }
 
+
+
         [HttpGet]
-        public IActionResult Modifica()
-        {                            
-             return View("AggiornaPizze");
+        public IActionResult Modifica(int id)
+        {
+            Pizze ModificaPizza = null;
+
+            using (PizzaContext DatabasePizza = new PizzaContext())
+            {
+                // adesso creiamo un nuovo sistema per trovare le pizze 
+                ModificaPizza = DatabasePizza.pizzas
+                 .Where(Pizze => Pizze.Id == id)
+                 .First();
+            }
+            if (ModificaPizza == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View("AggiornaPizza", ModificaPizza);
+            }
         }
-         
-             
 
         [HttpPost]
         public IActionResult Modifica(int id, Pizze MandaPizza)
@@ -100,72 +119,58 @@ namespace PizzeriaAgrippino.Controllers
                 return View("AggiornaPizze", MandaPizza);
             }
 
+            Pizze ModificaPizza = null;
 
-            Pizze PizzaIniziale = GetPizzeById(id);
-
-            if (PizzaIniziale != null)
+            using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                PizzaIniziale.ImagePizza = MandaPizza.ImagePizza;
-                PizzaIniziale.NamePizza = MandaPizza.NamePizza;
-                PizzaIniziale.DescriptionPizza = MandaPizza.DescriptionPizza;
-                PizzaIniziale.PricePizza = PizzaIniziale.PricePizza;
-                
-                return RedirectToAction("Index");
+                ModificaPizza = DatabasePizza.pizzas
+               .Where(Pizze => Pizze.Id == id)
+               .First();
             }
-            else
+            if (ModificaPizza != null)
+            {
+                ModificaPizza.ImagePizza = MandaPizza.ImagePizza;
+                ModificaPizza.NamePizza = MandaPizza.NamePizza;
+                ModificaPizza.DescriptionPizza = MandaPizza.DescriptionPizza;
+                ModificaPizza.PricePizza = MandaPizza.PricePizza;
+
+                return RedirectToAction("Index");
+            } else
             {
                 return NotFound();
             }
+
         }
 
-            private Pizze GetPizzeById(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+
+            using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                Pizze PizzaCheStoPerModificare = null;
+                Pizze PizzaDaCancellare = DatabasePizza.pizzas
+                   .Where(Pizze => Pizze.Id == id)
+                   .First();
 
-                foreach (Pizze pizze in PostData.GetPosts())
+                if (PizzaDaCancellare != null)
                 {
-                    if (pizze.Id == id)
-                    {
-                    PizzaCheStoPerModificare = pizze;
-                        break;
-                    }
-                }
-                return PizzaCheStoPerModificare;
-            }
-          
-            [HttpPost]
-            public IActionResult Delete(int id)
-            {
-                int PizzaDaRimuovere = - 1;
+                    DatabasePizza.pizzas.Remove(PizzaDaCancellare);
+                    DatabasePizza.SaveChanges();
 
-                List<Pizze> ListaDellePizze = PostData.GetPosts();
-    
-                for(int i = 0; i < ListaDellePizze.Count; i++)
+                    return RedirectToAction("Index");
+                } else
                 {
-                  if(ListaDellePizze[i].Id == id)
-                  {
-                    PizzaDaRimuovere = i;
-                  }
-                }
-
-                if(PizzaDaRimuovere >= 0)
-                { 
-                 PostData.GetPosts().RemoveAt(PizzaDaRimuovere);
-
-                 return RedirectToAction("Index");
-                }else
-                {
-                return NotFound();
+                    return NotFound();
                 }
             }
-        
+        }
             [HttpGet]
             public IActionResult PaginaInformazioni()
-            {                  
+            {
                 return View("PaginaInformazioni");
             }
+        
     }
-
 }
 
 
