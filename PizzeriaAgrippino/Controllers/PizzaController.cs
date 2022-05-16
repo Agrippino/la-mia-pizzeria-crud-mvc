@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzeriaAgrippino.Data;
 using PizzeriaAgrippino.Models;
 using PizzeriaAgrippino.Utilies;
 
@@ -8,10 +9,18 @@ namespace PizzeriaAgrippino.Controllers
     {
         [HttpGet]
         public IActionResult Index()
-        {   //il controller dice le liste e il modello 
+        {  
+            //adesso aggiungiamo il nuovo sistema che abbiamo imparato con i DB
+            List<Pizze> pizzes = new List<Pizze>();
+
+            using(PizzaContext DatabasePizza = new PizzaContext())
+            {
+                pizzes = DatabasePizza.pizzas.ToList<Pizze>();
+            }
+            //il controller dice le liste e il modello 
             //quando chiamo il controller idez il controller si chiama la lista dei post con il metodo getspost()
             // 
-            List<Pizze> pizzes = PostData.GetPosts();
+            
             //poi dobbiamo passare una razor, quindi inseriamo il nome della lista, cioè pizzes 
             // potremmo anche non inserire homepage nel caso in cui avessimo lasciato il file nominato index 
             return View("HomePage", pizzes);
