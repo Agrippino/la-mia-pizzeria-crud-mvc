@@ -96,7 +96,7 @@ namespace PizzeriaAgrippino.Controllers
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                // adesso creiamo un nuovo sistema per trovare le pizze 
+
                 ModificaPizza = DatabasePizza.Pizzas
                  .Where(Pizze => Pizze.Id == id)
                  .First();
@@ -107,7 +107,7 @@ namespace PizzeriaAgrippino.Controllers
             }
             else
             {
-                return View("AggiornaPizza", ModificaPizza);
+                return View("AggiornaPizze", ModificaPizza);
             }
         }
 
@@ -119,27 +119,28 @@ namespace PizzeriaAgrippino.Controllers
                 return View("AggiornaPizze", MandaPizza);
             }
 
-            Pizze ModificaPizza = null;
+            Pizze ? ModificaPizza = null;
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
                 ModificaPizza = DatabasePizza.Pizzas
                .Where(Pizze => Pizze.Id == id)
-               .First();
-            }
-            if (ModificaPizza != null)
-            {
-                ModificaPizza.ImagePizza = MandaPizza.ImagePizza;
-                ModificaPizza.NamePizza = MandaPizza.NamePizza;
-                ModificaPizza.DescriptionPizza = MandaPizza.DescriptionPizza;
-                ModificaPizza.PricePizza = MandaPizza.PricePizza;
+               .FirstOrDefault();
 
-                return RedirectToAction("Index");
-            } else
-            {
-                return NotFound();
+                if (ModificaPizza != null)
+                {
+                    ModificaPizza.ImagePizza = MandaPizza.ImagePizza;
+                    ModificaPizza.NamePizza = MandaPizza.NamePizza;
+                    ModificaPizza.DescriptionPizza = MandaPizza.DescriptionPizza;
+                    ModificaPizza.PricePizza = MandaPizza.PricePizza;
+                    DatabasePizza.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-
         }
 
         [HttpPost]
