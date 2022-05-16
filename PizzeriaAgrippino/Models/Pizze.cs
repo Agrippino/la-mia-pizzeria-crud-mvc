@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzeriaAgrippino.Models
 
@@ -6,6 +7,7 @@ namespace PizzeriaAgrippino.Models
     public class Pizze
     {
         //inseriamo required che obbliga all'utente di inserire quel campo o una determinata informazione
+        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage="Il campo immagine è obbligatorio")]
         [Url(ErrorMessage = "Non hai inserito un Url valido")]
@@ -15,6 +17,7 @@ namespace PizzeriaAgrippino.Models
         public string NamePizza { get; set; }
         [Required(ErrorMessage = "Il campo Descrizione è obbligatorio")]
         [StringLength(250, ErrorMessage = "Hai superato il limire di caratteri massimo di 250")]
+        [Column(TypeName = "Text")]
         public string DescriptionPizza { get; set; }
         [Required(ErrorMessage = "Il campo Prezzo è obbligatorio")]
         [Range(0.01,30, ErrorMessage = "Mi dispaice hai inserito un prezzo non valido, i minimo è 0.01€ mentre il massimo è 30€ ")]
@@ -25,9 +28,8 @@ namespace PizzeriaAgrippino.Models
 
         }
 
-        public Pizze(int id, string imagePizza, string namePizza, string descriptionPizza, double pricePizza)
+        public Pizze(string imagePizza, string namePizza, string descriptionPizza, double pricePizza)
         {
-            this.Id = id;
             this.ImagePizza = imagePizza;
             this.NamePizza = namePizza;
             this.DescriptionPizza = descriptionPizza;
