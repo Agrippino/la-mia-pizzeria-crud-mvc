@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAgrippino.Data;
 using PizzeriaAgrippino.Models;
-using PizzeriaAgrippino.Utilies;
+
 
 namespace PizzeriaAgrippino.Controllers
 {
@@ -15,7 +15,7 @@ namespace PizzeriaAgrippino.Controllers
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                pizzes = DatabasePizza.pizzas.ToList<Pizze>();
+                pizzes = DatabasePizza.Pizzas.ToList<Pizze>();
             }
             //il controller dice le liste e il modello 
             //quando chiamo il controller idez il controller si chiama la lista dei post con il metodo getspost()
@@ -36,7 +36,7 @@ namespace PizzeriaAgrippino.Controllers
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
                 // adesso creiamo un nuovo sistema per trovare le pizze 
-                Pizze TrovaPizza = DatabasePizza.pizzas
+                Pizze TrovaPizza = DatabasePizza.Pizzas
                 .Where(Pizze => Pizze.Id == id)
                 .First();
 
@@ -77,7 +77,7 @@ namespace PizzeriaAgrippino.Controllers
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
                 Pizze NuovaPizzaDaInserire = new Pizze(NuovaPizza.ImagePizza, NuovaPizza.NamePizza, NuovaPizza.DescriptionPizza, NuovaPizza.PricePizza);
-                DatabasePizza.pizzas.Add(NuovaPizzaDaInserire);
+                DatabasePizza.Pizzas.Add(NuovaPizzaDaInserire);
                 DatabasePizza.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -97,7 +97,7 @@ namespace PizzeriaAgrippino.Controllers
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
                 // adesso creiamo un nuovo sistema per trovare le pizze 
-                ModificaPizza = DatabasePizza.pizzas
+                ModificaPizza = DatabasePizza.Pizzas
                  .Where(Pizze => Pizze.Id == id)
                  .First();
             }
@@ -123,7 +123,7 @@ namespace PizzeriaAgrippino.Controllers
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                ModificaPizza = DatabasePizza.pizzas
+                ModificaPizza = DatabasePizza.Pizzas
                .Where(Pizze => Pizze.Id == id)
                .First();
             }
@@ -148,13 +148,13 @@ namespace PizzeriaAgrippino.Controllers
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                Pizze PizzaDaCancellare = DatabasePizza.pizzas
+                Pizze PizzaDaCancellare = DatabasePizza.Pizzas
                    .Where(Pizze => Pizze.Id == id)
                    .First();
 
                 if (PizzaDaCancellare != null)
                 {
-                    DatabasePizza.pizzas.Remove(PizzaDaCancellare);
+                    DatabasePizza.Pizzas.Remove(PizzaDaCancellare);
                     DatabasePizza.SaveChanges();
 
                     return RedirectToAction("Index");
