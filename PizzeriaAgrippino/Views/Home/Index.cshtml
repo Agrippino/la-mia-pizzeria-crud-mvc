@@ -1,1 +1,43 @@
-﻿<h1> Benvenuto nel mio sito</h1> 
+﻿
+
+    <div class="container container-fluid">
+     <div class="row">
+          <div class= "col-6 ps-5 mt-3 col-xxl-6 ">
+           <div class="card mb-3 border border-dark shadow" >
+            <div class="row g-0">
+                 <div class="col-md-4">
+                   <img src="@ElencoPizze.ImagePizza" style="height:250px" class="img-fluid rounded-start" alt="Pizza">
+                 </div>
+            <div class="col-md-8">
+             <div class="card-body">
+                    <h5 class="card-title">
+                    @ElencoPizze.NamePizza
+                    </h5>                  
+                    <p class="card-text"><small>
+                    @ElencoPizze.PricePizza€ </small>
+                    </p>
+                    <!-- qui dentro vengono mostrati i nostri elementi -->
+                    </div>
+                  </div>
+                </div>
+            </div>
+           </div>
+        </div>
+     </div>
+
+@section Scripts{
+    <!--adesso inseriamo lo script di javascritpt perché dobbiamo lavorare con questo linguaggio-->
+    <script type="text/javascript">
+    
+        function loadpost()
+        {
+            axios.get('/api/Pizzerias/Get').then((result)) => 
+            {
+            //quando arriveranno i posto in questo metodo che serve per caricare i post, invierò un messaggio positivo che sono arrivati le pizze alla mia webapi 
+            console.log("Ho ricevuto le pizze, buona appetito! ")
+            }
+            )
+        }
+
+    </script>
+}
