@@ -1,43 +1,78 @@
 ﻿
-
-    <div class="container container-fluid">
-     <div class="row">
-          <div class= "col-6 ps-5 mt-3 col-xxl-6 ">
-           <div class="card mb-3 border border-dark shadow" >
-            <div class="row g-0">
-                 <div class="col-md-4">
-                   <img src="@ElencoPizze.ImagePizza" style="height:250px" class="img-fluid rounded-start" alt="Pizza">
-                 </div>
-            <div class="col-md-8">
-             <div class="card-body">
-                    <h5 class="card-title">
-                    @ElencoPizze.NamePizza
-                    </h5>                  
-                    <p class="card-text"><small>
-                    @ElencoPizze.PricePizza€ </small>
-                    </p>
-                    <!-- qui dentro vengono mostrati i nostri elementi -->
-                    </div>
-                  </div>
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mt-3 mb-3">Lista posts</h1>
             </div>
-           </div>
         </div>
-     </div>
-
+    </div>
+    <div id="js_wait_post" class="row text-center">
+        <div class="col-12">
+            <h3>Sto aspettando i POST ...</h3>
+        </div>
+    </div>
+    <div div="js_no_post" class="row  text-center d-none">
+        <div class="col-12">
+            <h3>Non hai inserito alcun post</h3>
+        </div>
+    </div>
+    <div id="js_post_table" class="row  d-none">
+        <!-- qui verranno mostrati gli elementi -->
+    </div>
+</div>
 @section Scripts{
     <!--adesso inseriamo lo script di javascritpt perché dobbiamo lavorare con questo linguaggio-->
     <script type="text/javascript">
-    
+        
+        loadpost();
+
         function loadpost()
         {
-            axios.get('/api/Pizzerias/Get').then((result)) => 
+            axios.get('/api/Pizzerias/Get').then((result) => 
             {
-            //quando arriveranno i posto in questo metodo che serve per caricare i post, invierò un messaggio positivo che sono arrivati le pizze alla mia webapi 
-            console.log("Ho ricevuto le pizze, buona appetito! ")
+                //quando arriveranno i posto in questo metodo che serve per caricare i post, invierò un messaggio positivo che sono arrivati le pizze alla mia webapi 
+                console.log("Ho ricevuto le pizze, buona appetito! ")
+
+                if(result.data.length == 0)
+                {   //inserisco dei console log per vedere se il programma si ferma così da capire gli errori 
+                    //utilizzando getelembyid devo dare un id alla classe sopra e scrivere il nome dell'id senza punto all'inizio
+                    //se utilizzo la query posso mettere tutto nella classe e non inserire il punto davanti
+                    console.log('1');
+                    document.getElementById('js_wait_post').classList.add('d-none');
+                    document.getElementById('js_no_post').classList.remove('d-none');
+                } else {
+                    console.log('2');
+                    document.getElementById('js_wait_post').classList.add('d-none');
+
+                    console.log('3');
+
+                     document.getElementById('js_post_table').classList.remove('d-none');
+
+                     console.log('4');
+                    //In questa lambda expression richiamo il nome della lista presente nel controller api 
+                    //tutti gli attributi inseriti devono essere uguali a quelli presenti nell model pizze (quelle dopo il this)
+                    result.data.forEach(pizzes =>{
+                        document.getElementById('js_post_table').innerHTML +=
+                  `
+                        <div class="col-12 col-md-4 p-2">
+                                   <div class="card post">
+                                      <img src="${pizzes.imagePizza}" class="card-img-top" alt="${pizzes.descriptionPizza}">
+                                      <div class="card-body">
+                                        <h5 class="card-title">${pizzes.namePizza}</h5>
+                                        <p class="card-text">${pizzes.descriptionPizza}</p>
+                                        <p class="card-text">${pizzes.pricePizza}</p>
+                                      </div>
+                                    </div>
+                                </div>
+                       `
+                    });
+                }
             }
-            )
-        }
+            ).catch((error) => {
+                console.log("C'è stato un errore : " + error);
+            });
+    }   
 
     </script>
 }

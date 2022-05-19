@@ -98,7 +98,7 @@
     </header>
 <main>    @RenderBody();    </main>
 
-  @RenderSection("OtherSection", required:false)
+  
     <!--footer-->
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
     <div class="col-md-4 d-flex align-items-center">
@@ -123,10 +123,11 @@
        <use xlink:href="#facebook"></use></a></li>
     </ul>
   </footer>
-
+@RenderSection("OtherSection", required:false)
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-  @RenderSection("Scripts", required: false)
+ @RenderSection("Scripts", required: false)
+ 
 </body>
 </html>
