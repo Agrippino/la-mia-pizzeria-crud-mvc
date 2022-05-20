@@ -23,6 +23,10 @@ namespace PizzeriaAgrippino.Models
         [Range(0.01,30, ErrorMessage = "Mi dispaice hai inserito un prezzo non valido, i minimo è 0.01€ mentre il massimo è 30€ ")]
         public double PricePizza { get; set; }
         
+        public int? CategoriaId { get; set; }
+
+        public Categoria? Categoria { get; set; }
+
         public Pizze()
         {
 

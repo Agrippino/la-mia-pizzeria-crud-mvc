@@ -58,33 +58,49 @@ namespace PizzeriaAgrippino.Controllers
         //creiamo anche un http get per scambiare le infomazioni 
         [HttpGet]
         public IActionResult CreaPizza()
-        {
-            return View("FormPizza");
+        {   
+            using (PizzaContext DatabasePizza = new PizzaContext())
+            {
+                List<Categoria> categorias = DatabasePizza.Categorias.ToList();
+                PizzaCategoria model = new PizzaCategoria();
+                model.Pizze = new Pizze ();
+                model.ListaCategoria = categorias;
+                return View("FormPizza");
+            }
+           
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         //creiamo poi un metodo chiamato creaPizza per acciugnere le pizze, aggiugnere il modello 
-        public IActionResult CreaPizza(Pizze NuovaPizza)
+        public IActionResult CreaPizza(PizzaCategoria Data)
         {
             //se il modello non  è valido ritorniamo una view
             if (!ModelState.IsValid)
             {
-                return View("FormPizza", NuovaPizza);
-
+                using (PizzaContext DatabasePizza = new PizzaContext())
+                {  
+                    List<Categoria> categorias = DatabasePizza.Categorias.ToList();
+                    Data.ListaCategoria = categorias;
+                }
+                return View("FormPizza", Data);
             }
-            //utilizzando sempre il metodo con i Db, er creare una pizza richiamiamo un costruttore, poi aggiugniamo e salviamo nel db 
+
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                Pizze NuovaPizzaDaInserire = new Pizze(NuovaPizza.ImagePizza, NuovaPizza.NamePizza, NuovaPizza.DescriptionPizza, NuovaPizza.PricePizza);
-                DatabasePizza.Pizzas.Add(NuovaPizzaDaInserire);
+                Pizze PizzaDaCreare = new Pizze();
+                PizzaDaCreare.ImagePizza = Data.Pizze.ImagePizza;
+                PizzaDaCreare.NamePizza = Data.Pizze.NamePizza;
+                PizzaDaCreare.DescriptionPizza = Data.Pizze.DescriptionPizza;
+                PizzaDaCreare.PricePizza = Data.Pizze.PricePizza;
+                PizzaDaCreare.CategoriaId = Data.Pizze.CategoriaId;
+                DatabasePizza.Add(PizzaDaCreare);
                 DatabasePizza.SaveChanges();
+
             }
+           
             return RedirectToAction("Index");
 
-            //Dato che non abbiamo un database dobbiamo inserire noi una nuovo oggetto che ha tutti gli aytributi della pizza 
-            //andiamo poi a richiamare tutto con il return redtoact e puntiamo alla nostra Homepage
-            //Se il modello è corretto prendiamo la lista postdata e il metodo get che aggiugnerà questo post alla lista
         }
 
 
