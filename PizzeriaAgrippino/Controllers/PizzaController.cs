@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAgrippino.Data;
 using PizzeriaAgrippino.Models;
-
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PizzeriaAgrippino.Controllers
 {
