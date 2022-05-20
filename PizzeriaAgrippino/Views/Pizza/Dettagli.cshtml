@@ -24,7 +24,19 @@
                           <p class="card-text"><small class="text-muted">
                           @Model.PricePizza</small>
                           </p>
-                          </div>
+                          <!--Creo uno spazio per vedere le categorie nei dettagli-->
+                          <p>
+                          <strong> Categoria; </strong>
+                          @if(Model.Categoria != null)
+                          {
+                                <span>@Model.Categoria.TitoloCategoria</span>
+                            }
+                            else
+                            {
+                                <span>Nessuna Categoria per questa pizza </span>
+                            }
+                         </p>
+                        </div>
                           </div>
                           </div>
                         </div>
