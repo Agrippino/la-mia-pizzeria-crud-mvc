@@ -124,7 +124,7 @@ namespace PizzeriaAgrippino.Controllers
                 return NotFound();
             }
             else
-            {
+            {   //la pizza da modificare esiste 
                 PizzaCategoria model = new PizzaCategoria();
                 model.Pizze = ModificaPizza;
                 model.ListaCategoria = categorias;
