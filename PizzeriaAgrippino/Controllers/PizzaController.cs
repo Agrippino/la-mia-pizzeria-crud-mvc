@@ -116,7 +116,7 @@ namespace PizzeriaAgrippino.Controllers
 
                 ModificaPizza = DatabasePizza.Pizzas
                  .Where(Pizze => Pizze.Id == id)
-                 .First();
+                 .FirstOrDefault();
                 categorias = DatabasePizza.Categorias.ToList<Categoria>();
             }
             if (ModificaPizza == null)
@@ -126,6 +126,8 @@ namespace PizzeriaAgrippino.Controllers
             else
             {
                 PizzaCategoria model = new PizzaCategoria();
+                model.Pizze = ModificaPizza;
+                model.ListaCategoria = categorias;
                 return View("AggiornaPizze", model);
             }
         }
