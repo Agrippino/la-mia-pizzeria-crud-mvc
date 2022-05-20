@@ -1,4 +1,4 @@
-﻿@model Pizze
+﻿@model PizzaCategoria
 
 <div class="container">
 	<div class="row">
@@ -10,25 +10,32 @@
 	 @Html.AntiForgeryToken()
 	<div class="mb-3">
 	<strong>Imamgine Pizza:</strong>
-	<input asp-for="ImagePizza" class="d-block w-100" />
+	<input asp-for="Pizze.ImagePizza" class="d-block w-100" />
 	<label for="floatingInputInvalid">Invalid input</label>
-	<span asp-validation-for="ImagePizza" class="text-danger"></span>
+	<span asp-validation-for="Pizze.ImagePizza" class="text-danger"></span>
 	</div>
 	<div class="mb-3">
 		<strong>Nome Pizza:</strong>
-		<input asp-for="NamePizza" class="d-block w-100" />
-		<span asp-validation-for="NamePizza" class="text-danger"></span>
+		<input asp-for="Pizze.NamePizza" class="d-block w-100" />
+		<span asp-validation-for="Pizze.NamePizza" class="text-danger"></span>
 	</div>
 		<div class="mb-3">
 		<strong>Descrizione Pizza:</strong>
-		<input asp-for="DescriptionPizza" class="d-block w-100" />
-		<span asp-validation-for="DescriptionPizza" class="text-danger"></span>
+		<input asp-for="Pizze.DescriptionPizza" class="d-block w-100" />
+		<span asp-validation-for="Pizze.DescriptionPizza" class="text-danger"></span>
 	</div>
 		<div class="mb-3">
 		<strong>Prezzo Pizza:</strong>
-		<input asp-for="PricePizza" class="d-block w-100" />
-		<span asp-validation-for="PricePizza" class="text-danger"></span>
+		<input asp-for="Pizze.PricePizza" class="d-block w-100" />
+		<span asp-validation-for="Pizze.PricePizza" class="text-danger"></span>
 	</div>
+	<select asp-for="Pizze.CategoriaId" class="form-select" aria-label="Default Select Example">
+		<option selected>Seleziona una categoria</option>
+		@foreach(Categoria CategoriaLista in Model.ListaCategoria)
+		{
+			<option value="@CategoriaLista.Id">@CategoriaLista.TitoloCategoria</option>
+		}
+	</select>
 	<div class="text-end">
 		<input type="submit" class="btn btn-small btn-info" value="Salva modifica">
 	</div>

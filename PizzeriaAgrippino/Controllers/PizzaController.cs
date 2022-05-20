@@ -65,7 +65,7 @@ namespace PizzeriaAgrippino.Controllers
                 PizzaCategoria model = new PizzaCategoria();
                 model.Pizze = new Pizze ();
                 model.ListaCategoria = categorias;
-                return View("FormPizza");
+                return View("FormPizza", model);
             }
            
         }
@@ -109,6 +109,7 @@ namespace PizzeriaAgrippino.Controllers
         public IActionResult Modifica(int id)
         {
             Pizze ModificaPizza = null;
+            List<Categoria> categorias = new List<Categoria>();
 
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
@@ -116,6 +117,7 @@ namespace PizzeriaAgrippino.Controllers
                 ModificaPizza = DatabasePizza.Pizzas
                  .Where(Pizze => Pizze.Id == id)
                  .First();
+                categorias = DatabasePizza.Categorias.ToList<Categoria>();
             }
             if (ModificaPizza == null)
             {
@@ -123,33 +125,40 @@ namespace PizzeriaAgrippino.Controllers
             }
             else
             {
-                return View("AggiornaPizze", ModificaPizza);
+                PizzaCategoria model = new PizzaCategoria();
+                return View("AggiornaPizze", model);
             }
         }
 
         [HttpPost]
-        public IActionResult Modifica(int id, Pizze MandaPizza)
+        public IActionResult Modifica(int id,PizzaCategoria model)
         {
             if (!ModelState.IsValid)
             {
-                return View("AggiornaPizze", MandaPizza);
+                using (PizzaContext DatabasePizza = new PizzaContext())
+                {
+                    List<Categoria> categorias = DatabasePizza.Categorias.ToList();
+                    model.ListaCategoria = categorias;
+
+                }
+                return View("AggiornaPizze", model);
             }
-
-            Pizze ? ModificaPizza = null;
-
+                Pizze PizzaDaAggiornare = null;
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
-                ModificaPizza = DatabasePizza.Pizzas
-               .Where(Pizze => Pizze.Id == id)
-               .FirstOrDefault();
+                PizzaDaAggiornare = DatabasePizza.Pizzas
+                    .Where(Pizza => Pizza.Id == id)
+                    .FirstOrDefault();
 
-                if (ModificaPizza != null)
+                if (PizzaDaAggiornare != null)
                 {
-                    ModificaPizza.ImagePizza = MandaPizza.ImagePizza;
-                    ModificaPizza.NamePizza = MandaPizza.NamePizza;
-                    ModificaPizza.DescriptionPizza = MandaPizza.DescriptionPizza;
-                    ModificaPizza.PricePizza = MandaPizza.PricePizza;
+                    PizzaDaAggiornare.ImagePizza = model.Pizze.ImagePizza;
+                    PizzaDaAggiornare.NamePizza = model.Pizze.NamePizza;
+                    PizzaDaAggiornare.DescriptionPizza = model.Pizze.DescriptionPizza;
+                    PizzaDaAggiornare.PricePizza = model.Pizze.PricePizza;
+                    PizzaDaAggiornare.CategoriaId = model.Pizze.CategoriaId;
                     DatabasePizza.SaveChanges();
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -157,6 +166,7 @@ namespace PizzeriaAgrippino.Controllers
                     return NotFound();
                 }
             }
+                   
         }
 
         [HttpPost]
