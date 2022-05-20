@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PizzeriaAgrippino.Models
 {
@@ -10,6 +11,7 @@ namespace PizzeriaAgrippino.Models
         [StringLength(100, ErrorMessage ="Il titolo della categoria non può superare i 100 caratteri")]
         public string TitoloCategoria { get; set; }
 
+        [JsonIgnore]
         public List<Pizze> Pizzes { get; set; }
 
         public Categoria()

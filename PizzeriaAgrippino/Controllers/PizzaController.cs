@@ -35,18 +35,21 @@ namespace PizzeriaAgrippino.Controllers
             //Ovviamente creo questa vista nel controller pizze(cartella)
             using (PizzaContext DatabasePizza = new PizzaContext())
             {
+                try { 
                 // adesso creiamo un nuovo sistema per trovare le pizze 
-                Pizze TrovaPizza = DatabasePizza.Pizzas
-                .Where(Pizze => Pizze.Id == id)
-                .First();
-
+                Pizze TrovaPizza = DatabasePizza.Pizzas.Where(Pizze => Pizze.Id == id)
+                        .Include(Pizze => Pizze.Categoria)
+                        .FirstOrDefault();
+                //aggiungo il .include perché così entity framework le categorie, non lo fa lui di sua spontanea volontà perché crede che siano troppo pesanti
                 //Se trovo una pizza con lo stesso id, dico che TDP è uguale a pizze e poi eseguo un break per uscire.
-                if (TrovaPizza != null)
-                {
+                                
                     return View("Dettagli", TrovaPizza);
-                } else
+                } catch(InvalidOperationException ex)
                 {
                     return NotFound("Il post con id" + id + " non è stato trovato");
+                }catch (Exception ex)
+                {
+                    return BadRequest();
                 }
             }
             //Se la pizza è stata trovata e quindi è diverso da null, faccio un return vista "dettagli" con il modello agganciato che sarebbe la pizza trovata         
