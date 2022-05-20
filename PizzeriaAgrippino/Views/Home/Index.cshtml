@@ -56,8 +56,15 @@
                     document.getElementById('pizza-wait').classList.add('d-none');
                     document.getElementById('pizza-div').classList.remove('d-none');
 
-                    result.data.forEach(pizzes => {
-                        document.getElementById('pizza-div').innerHTML += 
+                   result.data.forEach(pizzes => { 
+
+                    var Titolo_Categoria = "Nessun categoria associata";
+
+                        if(Pizze.Categoria != null){
+                            Titolo_Categoria = Pizze.Categoria.TitoloCategoria;
+                        }
+
+                       document.getElementById('pizza-div').innerHTML += 
                             `
                             <div class="col-12 col-md-4 p-2">
                                <div class="card post">
@@ -66,6 +73,9 @@
                                     <h5 class="card-title">${pizzes.namePizza}</h5>
                                     <p class="card-text">${pizzes.descriptionPizza}</p>
                                     <p class="card-text">${pizzes.pricePizza}</p>
+                                  </div>
+                                  <div class="card-footer">
+                                  ${Titolo_Categoria}
                                   </div>
                                 </div>
                             </div>

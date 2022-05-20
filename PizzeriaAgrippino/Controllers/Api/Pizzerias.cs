@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzeriaAgrippino.Data;
 using PizzeriaAgrippino.Models;
 
@@ -23,7 +24,7 @@ namespace PizzeriaAgrippino.Controllers.Api
                 }
                 else
                 {
-                    pizzes = DatabasePizza.Pizzas.ToList<Pizze>();
+                    pizzes = DatabasePizza.Pizzas.Include(pizza => pizza.Categoria).ToList<Pizze>();
                 }
         
                 return Ok(pizzes);
