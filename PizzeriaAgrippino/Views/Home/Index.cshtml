@@ -58,11 +58,7 @@
 
                    result.data.forEach(pizzes => { 
 
-                    var Titolo_Categoria = "Nessun categoria associata";
-
-                        if(Pizze.Categoria != null){
-                            Titolo_Categoria = Pizze.Categoria.TitoloCategoria;
-                        }
+                    
 
                        document.getElementById('pizza-div').innerHTML += 
                             `
@@ -74,9 +70,7 @@
                                     <p class="card-text">${pizzes.descriptionPizza}</p>
                                     <p class="card-text">${pizzes.pricePizza}</p>
                                   </div>
-                                  <div class="card-footer">
-                                  ${Titolo_Categoria}
-                                  </div>
+                                  
                                 </div>
                             </div>
                             `
